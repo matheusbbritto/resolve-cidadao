@@ -1,0 +1,27 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/levels/rain_street.tscn" id="1_fwkq8"]
+[ext_resource type="PackedScene" path="res://scenes/ui/dialogue_box.tscn" id="4_7x9kj"]
+[ext_resource type="PackedScene" path="res://scenes/ui/choice_panel.tscn" id="5_m2k8p"]
+[ext_resource type="PackedScene" path="res://scenes/ui/hud.tscn" id="6_hud01"]
+[ext_resource type="PackedScene" path="res://scenes/levels/rain_street_ray.tscn" id="6_ygxny"]
+[ext_resource type="PackedScene" path="res://scenes/ui/phone_menu.tscn" id="7_phone"]
+[ext_resource type="Script" path="res://scripts/main_game_controller.gd" id="8_h3x7f"]
+
+[node name="MainGame" type="Node2D"]
+script = ExtResource("8_h3x7f")
+
+[node name="RainStreet" parent="." instance=ExtResource("1_fwkq8")]
+
+[node name="UILayer" type="CanvasLayer" parent="."]
+layer = 2
+
+[node name="DialogueBox" parent="UILayer" instance=ExtResource("4_7x9kj")]
+
+[node name="ChoicePanel" parent="UILayer" instance=ExtResource("5_m2k8p")]
+
+[node name="PhoneMenu" parent="UILayer" instance=ExtResource("7_phone")]
+
+[node name="HUD" parent="." instance=ExtResource("6_hud01")]
+
+[node name="RayScene" parent="." instance=ExtResource("6_ygxny")]

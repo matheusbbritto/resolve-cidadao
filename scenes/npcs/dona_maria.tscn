@@ -1,0 +1,123 @@
+[gd_scene format=3]
+
+[ext_resource type="Texture2D" path="res://entities/npcs/dona_maria/individual_poses/Poses/character_femalePerson_behindBack.png" id="2_7c4pd"]
+[ext_resource type="Texture2D" path="res://entities/npcs/dona_maria/individual_poses/Poses/character_femalePerson_cheer0.png" id="3_5ngyf"]
+[ext_resource type="Texture2D" path="res://entities/npcs/dona_maria/individual_poses/Poses/character_femalePerson_cheer1.png" id="4_iibm2"]
+[ext_resource type="Texture2D" path="res://entities/npcs/dona_maria/individual_poses/Poses/character_femalePerson_walk0.png" id="5_6m82e"]
+[ext_resource type="Texture2D" path="res://entities/npcs/dona_maria/individual_poses/Poses/character_femalePerson_walk1.png" id="6_2mkqn"]
+[ext_resource type="Script" path="res://scripts/interaction_area.gd" id="6_js8n1"]
+[ext_resource type="Script" path="res://scripts/state_machine/state_machine.gd" id="7_7ld0m"]
+[ext_resource type="Texture2D" path="res://entities/npcs/dona_maria/individual_poses/Poses/character_femalePerson_walk2.png" id="7_e7sdw"]
+[ext_resource type="Texture2D" path="res://entities/npcs/dona_maria/individual_poses/Poses/character_femalePerson_walk3.png" id="8_o43uh"]
+[ext_resource type="Script" path="res://scripts/state_machine/states/state_interact.gd" id="8_wnv1r"]
+[ext_resource type="Texture2D" path="res://entities/npcs/dona_maria/individual_poses/Poses/character_femalePerson_walk4.png" id="9_acsyr"]
+[ext_resource type="Texture2D" path="res://entities/npcs/dona_maria/individual_poses/Poses/character_femalePerson_walk5.png" id="10_lkx7m"]
+[ext_resource type="Texture2D" path="res://entities/npcs/dona_maria/individual_poses/Poses/character_femalePerson_walk6.png" id="11_cop2v"]
+[ext_resource type="Script" path="res://scripts/state_machine/states/state_dialogue.gd" id="11_yfo47"]
+[ext_resource type="Texture2D" path="res://entities/npcs/dona_maria/individual_poses/Poses/character_femalePerson_walk7.png" id="12_lnmao"]
+[ext_resource type="Texture2D" path="res://entities/npcs/dona_maria/individual_poses/Poses/character_femalePerson_wide.png" id="13_l0xpu"]
+[ext_resource type="Resource" path="res://dialogues/missao_01/dona_maria.dialogue" id="14_m2n4x"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_y4sb7"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_7c4pd")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_5ngyf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_iibm2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_5ngyf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_7c4pd")
+}],
+"loop": true,
+"name": &"Default",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_6m82e")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_2mkqn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_e7sdw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_o43uh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_acsyr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_lkx7m")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_cop2v")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_lnmao")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_l0xpu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_lnmao")
+}],
+"loop": true,
+"name": &"Walking",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="1_gsk0d"]
+radius = 24.0
+height = 100.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_dona"]
+radius = 43.104523
+
+[node name="DonaMariam" type="CharacterBody2D" unique_id=1925654727]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=500550676]
+sprite_frames = SubResource("SpriteFrames_y4sb7")
+animation = &"Default"
+autoplay = "Default"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=363887923]
+position = Vector2(2, 21)
+shape = SubResource("1_gsk0d")
+
+[node name="InteractionArea" type="Area2D" parent="." unique_id=273116475]
+z_index = -1
+collision_layer = 0
+collision_mask = 8
+monitorable = false
+script = ExtResource("6_js8n1")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionArea" unique_id=996651999]
+position = Vector2(1, 11)
+shape = SubResource("CircleShape2D_dona")
+
+[node name="StateMachine" type="Node" parent="." unique_id=1234567890 node_paths=PackedStringArray("current_state")]
+script = ExtResource("7_7ld0m")
+current_state = NodePath("interact")
+
+[node name="interact" type="Node" parent="StateMachine" unique_id=1234567891 node_paths=PackedStringArray("interaction_area", "on_completion")]
+script = ExtResource("8_wnv1r")
+interaction_area = NodePath("../../InteractionArea")
+action_trigger = "interact"
+one_shot = false
+on_completion = [NodePath("../start_dialogue")]
+
+[node name="start_dialogue" type="Node" parent="StateMachine" unique_id=1234567892 node_paths=PackedStringArray("on_completion")]
+script = ExtResource("11_yfo47")
+dialogue = ExtResource("14_m2n4x")
+title = "intro"
+on_completion = [NodePath("../interact")]
